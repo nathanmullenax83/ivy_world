@@ -4,11 +4,10 @@ cd bin && make
 # Find screen dots per inch
 SCALE=4
 echo DPI=`xrdb -query | grep dpi | ./integer_extract` > ../.env
-
-
-
 # Factor by which size of an object should be reduced (8 means 1/8th actual)
 echo "SCALE=$SCALE" >> ../.env
+echo "PORT=3121" >> ../.env
+
 cd ../gfx
 touch ./sentinal.png
 rm ./*.png
@@ -20,6 +19,7 @@ for f in res/*.svg; do
     SCALED_HEIGHT=`echo 1 $SCALE $HEIGHT | ../bin/divide_by_m_times_n`
     OUT_FILE_NAME=`echo / . $f | ../bin/clean_svg_filename`
     echo "    {" >> ./icons.json
+    echo "          \"type\": \"icon\"," >> ./icons.json
     echo "          \"width\":\"$WIDTH\"," >> ./icons.json
     echo "          \"height\": \"$HEIGHT\"," >> ./icons.json
     echo "          \"scaledWidth\": \"$SCALED_WIDTH\"," >> ./icons.json
